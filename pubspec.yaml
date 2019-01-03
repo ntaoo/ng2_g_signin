@@ -1,15 +1,12 @@
 name: ng2_g_signin
 description: Google sign-in component for Angular2 Dart.
-version: 0.3.1
+version: 0.3.2
 author: ntaoo <ntaoo.g@gmail.com>
 homepage: https://github.com/ntaoo/ng2_g_signin
 
 environment:
-  sdk: '>=1.19.1 <2.0.0'
+  sdk: '>=2.1.0 <3.0.0'
 
 dependencies:
-  angular2: ^2.0.0
+  angular: ^5.1.0
   js: ^0.6.0
-
-transformers:
-- angular2

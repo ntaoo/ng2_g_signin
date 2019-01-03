@@ -1,26 +1,12 @@
 name: ng2_g_signin_site
 description: A example site of ng2_g_signin.
-version: 0.3.1
+version: 0.3.2
 environment:
-  sdk: '>=1.19.1 <2.0.0'
+  sdk: '>=2.1.0 <3.0.0'
 dependencies:
-  angular2: ^2.0.0
+  angular: ^5.1.0
+  build_runner: ^1.1.2
+  build_web_compilers: ^0.4.4
   ng2_g_signin:
     path: ../../../ng2_g_signin
-  browser: ^0.10.0
-  dart_to_js_script_rewriter: ^0.1.0
-transformers:
-- angular2:
-    platform_directives:
-    - 'package:angular2/common.dart#COMMON_DIRECTIVES'
-    platform_pipes:
-    - 'package:angular2/common.dart#COMMON_PIPES'
-    entry_points: web/main.dart
-- dart_to_js_script_rewriter
 
-- $dart2js:
-    minify: true
-    commandLineOptions:
-    - --enable-experimental-mirrors
-    - --trust-type-annotations
-    - --trust-primitives
