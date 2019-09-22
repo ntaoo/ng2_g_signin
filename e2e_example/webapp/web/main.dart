@@ -2,9 +2,9 @@
 
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'package:angular2/platform/browser.dart';
-import 'package:ng2_g_signin_site/app_component.dart';
+import 'package:angular/angular.dart';
+import 'package:ng2_g_signin_site/app_component.template.dart' as ng;
 
 main() {
-  bootstrap(AppComponent);
+  runApp(ng.AppComponentNgFactory);
 }

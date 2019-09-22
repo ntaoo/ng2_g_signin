@@ -1,4 +1,6 @@
-import 'package:angular2/angular2.dart';
+import 'dart:async';
+
+import 'package:angular/angular.dart';
 import 'package:js/js.dart';
 
 import 'events.dart';
@@ -11,9 +13,7 @@ class ClientIdNotFoundError extends StateError {
 }
 
 @Component(
-    selector: 'google-signin',
-    template: '<div [id]="id"></div>',
-    changeDetection: ChangeDetectionStrategy.OnPush)
+    selector: 'google-signin', template: '<div [id]="id"></div>', changeDetection: ChangeDetectionStrategy.OnPush)
 class GoogleSignin implements AfterViewInit {
   final String id = 'google-signin2';
 
@@ -71,13 +71,19 @@ class GoogleSignin implements AfterViewInit {
   @Input()
   String openidRealm;
 
-  @Output()
-  EventEmitter<GoogleSignInSuccess> googleSigninSuccess =
-      new EventEmitter<GoogleSignInSuccess>();
+  StreamController _googleSigninSuccessController = StreamController<GoogleSignInSuccess>();
+  StreamController _googleSignInFailureController = StreamController<GoogleSignInFailure>();
 
   @Output()
-  EventEmitter<GoogleSignInFailure> googleSignInFailure =
-      new EventEmitter<GoogleSignInFailure>();
+  Stream<GoogleSignInSuccess> googleSigninSuccess;
+
+  @Output()
+  Stream<GoogleSignInFailure> googleSignInFailure;
+
+  GoogleSignin(){
+    googleSigninSuccess = _googleSigninSuccessController.stream;
+    googleSignInFailure = _googleSignInFailureController.stream;
+  }
 
   ngAfterViewInit() {
     _auth2Init();
@@ -88,7 +94,7 @@ class GoogleSignin implements AfterViewInit {
     if (clientId == null)
       throw new ClientIdNotFoundError(
           'clientId property is necessary. (<google-signin clientId="..."></google-signin>)');
-    
+
     load('auth2', allowInterop(() {
       auth2.init(new auth2.Params(
           client_id: clientId,
@@ -100,11 +106,11 @@ class GoogleSignin implements AfterViewInit {
   }
 
   void _handleFailure() {
-    googleSignInFailure.add(new GoogleSignInFailure());
+    _googleSignInFailureController.add(new GoogleSignInFailure());
   }
 
   void _handleSuccess(auth2.GoogleUser googleUser) {
-    googleSigninSuccess.add(new GoogleSignInSuccess(googleUser));
+    _googleSigninSuccessController.add(new GoogleSignInSuccess(googleUser));
   }
 
   bool _nullableParseBool(String boolString) {
@@ -123,8 +129,7 @@ class GoogleSignin implements AfterViewInit {
             height: _height,
             longtitle: _longTitle,
             theme: theme,
-            onsuccess: allowInterop(
-                (auth2.GoogleUser googleUser) => _handleSuccess(googleUser)),
+            onsuccess: allowInterop((auth2.GoogleUser googleUser) => _handleSuccess(googleUser)),
             onfailure: allowInterop(() => _handleFailure())));
   }
 }

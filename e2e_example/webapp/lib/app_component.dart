@@ -2,13 +2,10 @@
 
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'package:angular2/core.dart';
+import 'package:angular/angular.dart';
 import 'package:ng2_g_signin/ng2_g_signin.dart';
 
-@Component(
-    selector: 'my-app',
-    templateUrl: 'app_component.html',
-    directives: const [GoogleSignin])
+@Component(selector: 'my-app', templateUrl: 'app_component.html', directives: const [NgIf, GoogleSignin])
 class AppComponent {
   bool isSignedIn = false;
   String id;
@@ -21,9 +18,7 @@ class AppComponent {
     String id = googleUser.getId();
     assert(googleUser.isSignedIn());
     BasicProfile profile = googleUser.getBasicProfile();
-    print('ID: ' +
-        profile
-            .getId()); // Do not send to your backend! Use an ID token instead.
+    print('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
     assert(profile.getId() == id);
     print('Name: ' + profile.getName());
     print('Image URL: ' + profile.getImageUrl());
